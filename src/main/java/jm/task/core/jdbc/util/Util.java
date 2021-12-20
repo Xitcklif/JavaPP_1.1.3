@@ -3,27 +3,28 @@ package jm.task.core.jdbc.util;
 import java.sql.*;
 
 public class Util {
-    private final String user = "root";
-    private final String pass = "awR123qe";
-    private final String url = "jdbc:mysql://localhost:3306/javatest";
-    private Connection con;
-    private Statement st;
-
     public Util() {
+    }
+
+    public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, pass);
-            st = con.createStatement();
+            return DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/javatest",
+                    "root",
+                    "awR123qe");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    public Connection getConnection() {
-        return con;
-    }
-
-    public Statement getStatement() {
-        return st;
+    public static Statement getStatement(Connection con) {
+        try {
+            return con.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
