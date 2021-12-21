@@ -18,13 +18,4 @@ public class Util {
         }
         return null;
     }
-
-    public static Statement getStatement(Connection con) {
-        try {
-            return con.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
