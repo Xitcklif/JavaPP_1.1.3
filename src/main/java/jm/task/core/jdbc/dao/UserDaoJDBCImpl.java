@@ -28,10 +28,13 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
     }
@@ -41,25 +44,29 @@ public class UserDaoJDBCImpl implements UserDao {
         Statement st = null;
         try {
             con = Util.getConnection();
-            st = con.createStatement();;
+            st = con.createStatement();
             st.executeUpdate("drop table if exists Users;");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
         Connection con = null;
+        PreparedStatement ps = null;
         try {
             con = Util.getConnection();
-            PreparedStatement ps = con.prepareStatement(
+            ps = con.prepareStatement(
                     "insert into Users (name, lastName, age) values (?, ?, ?)");
             ps.setString(1, name);
             ps.setString(2, lastName);
@@ -69,28 +76,36 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
     }
 
     public void removeUserById(long id) {
         Connection con = null;
+        PreparedStatement ps = null;
         try {
             con = Util.getConnection();
-            PreparedStatement ps = con.prepareStatement(
-                    "delete from Users where id = ?");
+            ps = con.prepareStatement("delete from Users where id = ?");
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
     }
@@ -98,12 +113,13 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         Connection con = null;
         Statement st = null;
+        ResultSet rs = null;
         List<User> users = new ArrayList<>();
         User user;
         try {
             con = Util.getConnection();
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from Users;");
+            rs = st.executeQuery("select * from Users;");
             while (rs.next()) {
                 user = new User(rs.getString("name"),
                         rs.getString("lastName"),
@@ -115,10 +131,16 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
         return users;
@@ -129,16 +151,20 @@ public class UserDaoJDBCImpl implements UserDao {
         Statement st = null;
         try {
             con = Util.getConnection();
-            st = con.createStatement();;
+            st = con.createStatement();
+            ;
             st.executeUpdate("truncate table Users;");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                con.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (con != null) {
+                    con.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ignore) {
             }
         }
     }
